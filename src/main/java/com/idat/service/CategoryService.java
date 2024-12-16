@@ -2,12 +2,15 @@ package com.idat.service;
 
 import java.util.List;
 
-import com.idat.entity.Category;
+import com.idat.dto.CategoryDto;
+import com.idat.dto.CategoryResponse;
 
 public interface CategoryService {
 	
-	public Boolean saveCategory(Category category);
+	public Boolean saveCategory(CategoryDto categoryDto);
 	
-	public List<Category> getAllCategories();
+	public List<CategoryDto> getAllCategories();
+
+	public List<CategoryResponse> getActiveCategories();
 
 }
