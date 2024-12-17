@@ -15,6 +15,7 @@ import com.idat.entity.Category;
 import com.idat.exception.ResourceNotFounfException;
 import com.idat.repository.CategoryRepository;
 import com.idat.service.*;
+import com.idat.util.Validation;
 
 @Service
 public class CategoryServiceImpl implements  CategoryService{
@@ -24,14 +25,14 @@ public class CategoryServiceImpl implements  CategoryService{
 	
 	@Autowired
 	private ModelMapper mapper;
+	
+	@Autowired
+	private Validation validation;
 
 	@Override
 	public Boolean saveCategory(CategoryDto categoryDto) {
 		
-//		Category category = new Category();
-//		category.setName(categoryDto.getName());
-//		category.setDescription(categoryDto.getDescription());
-//		category.setIsActive(categoryDto.getIsActive());
+		validation.categoryValidation(categoryDto);
 		
 		Category category = mapper.map(categoryDto, Category.class);
 		if (ObjectUtils.isEmpty(category.getId())) {
