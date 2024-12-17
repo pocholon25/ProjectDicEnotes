@@ -17,8 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.idat.dto.CategoryDto;
 import com.idat.dto.CategoryResponse;
+import com.idat.exception.ResourceNotFounfException;
 import com.idat.service.CategoryService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/category")
 public class CategoryController {
@@ -37,7 +41,9 @@ public class CategoryController {
 	}
 	
 	@GetMapping("/")
-	public ResponseEntity<?> getAllCategory(){	
+	public ResponseEntity<?> getAllCategory(){
+//		String nm = null;
+//		nm.toUpperCase();
 		List<CategoryDto> allCategories = categoryService.getAllCategories();
 		if (CollectionUtils.isEmpty(allCategories)) {
 			return ResponseEntity.noContent().build();
@@ -57,14 +63,25 @@ public class CategoryController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getCategoryDetailsById(@PathVariable Integer id){
+	public ResponseEntity<?> getCategoryDetailsById(@PathVariable Integer id) throws Exception{
+//		try {
+//			CategoryDto categoryDto = categoryService.getCategoryById(id);
+//			if (ObjectUtils.isEmpty(categoryDto)) {
+//				return new ResponseEntity<>("category not found with Id = "+id, HttpStatus.NOT_FOUND);
+//			}
+//				return new ResponseEntity<>(categoryDto, HttpStatus.OK);
+//			}catch (ResourceNotFounfException e) {
+//				log.error("Controller::getCategoryDetailsById::", e.getMessage());
+//				return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+//			}catch (Exception e) {
+//				return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+		
 		CategoryDto categoryDto = categoryService.getCategoryById(id);
 		if (ObjectUtils.isEmpty(categoryDto)) {
-			return new ResponseEntity<>("category not found with Id = "+id, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("Internal Server Error", HttpStatus.NOT_FOUND);
 		}
-		else {
 			return new ResponseEntity<>(categoryDto, HttpStatus.OK);
-		}
 	}
 	
 	@DeleteMapping("/{id}")
