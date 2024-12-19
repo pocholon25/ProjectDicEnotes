@@ -19,6 +19,7 @@ import com.idat.dto.CategoryDto;
 import com.idat.dto.CategoryResponse;
 import com.idat.exception.ResourceNotFounfException;
 import com.idat.service.CategoryService;
+import com.idat.util.CommonUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,21 +35,22 @@ public class CategoryController {
 	public ResponseEntity<?> saveCategory(@RequestBody CategoryDto categoryDto){		
 		Boolean saveCategory = categoryService.saveCategory(categoryDto);
 		if (saveCategory) {
-			return new ResponseEntity<>("saved success", HttpStatus.CREATED);
+			return CommonUtil.createBuildResponseMessage("saved success", HttpStatus.CREATED);
+			//return new ResponseEntity<>("saved success", HttpStatus.CREATED);
 		}else {
-			return new ResponseEntity<>("not saved", HttpStatus.INTERNAL_SERVER_ERROR);
+			return CommonUtil.createErrorResponseMessage("Category not saved", HttpStatus.INTERNAL_SERVER_ERROR);
+			//return new ResponseEntity<>("not saved", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
 	@GetMapping("/")
 	public ResponseEntity<?> getAllCategory(){
-//		String nm = null;
-//		nm.toUpperCase();
 		List<CategoryDto> allCategories = categoryService.getAllCategories();
 		if (CollectionUtils.isEmpty(allCategories)) {
 			return ResponseEntity.noContent().build();
 		}else {
-			return new ResponseEntity<>(allCategories,HttpStatus.OK);
+			return CommonUtil.createBuildResponse(allCategories, HttpStatus.OK);
+			//return new ResponseEntity<>(allCategories,HttpStatus.OK);
 		}
 	}
 	
@@ -58,7 +60,8 @@ public class CategoryController {
 		if (CollectionUtils.isEmpty(allCategories)) {
 			return ResponseEntity.noContent().build();
 		}else {
-			return new ResponseEntity<>(allCategories,HttpStatus.OK);
+			return CommonUtil.createBuildResponse(allCategories, HttpStatus.OK);
+//			return new ResponseEntity<>(allCategories,HttpStatus.OK);
 		}
 	}
 	
@@ -79,18 +82,22 @@ public class CategoryController {
 		
 		CategoryDto categoryDto = categoryService.getCategoryById(id);
 		if (ObjectUtils.isEmpty(categoryDto)) {
-			return new ResponseEntity<>("Internal Server Error", HttpStatus.NOT_FOUND);
+			return CommonUtil.createErrorResponseMessage("Internal Server Error", HttpStatus.NOT_FOUND);
+//			return new ResponseEntity<>("Internal Server Error", HttpStatus.NOT_FOUND);
 		}
-			return new ResponseEntity<>(categoryDto, HttpStatus.OK);
+			return CommonUtil.createBuildResponse(categoryDto, HttpStatus.OK);
+//			return new ResponseEntity<>(categoryDto, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteCategoryById(@PathVariable Integer id){
 		Boolean deleted = categoryService.deleteCategory(id);
 		if (deleted) {
-			return new ResponseEntity<>("Category deleted success", HttpStatus.OK);
+			return CommonUtil.createErrorResponseMessage("Category deleted success", HttpStatus.OK);
+//			return new ResponseEntity<>("Category deleted success", HttpStatus.OK);
 		}
-		return new ResponseEntity<>("Category not deleted", HttpStatus.INTERNAL_SERVER_ERROR);
+		return CommonUtil.createErrorResponseMessage("Category not deleted", HttpStatus.INTERNAL_SERVER_ERROR);
+//		return new ResponseEntity<>("Category not deleted", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	
